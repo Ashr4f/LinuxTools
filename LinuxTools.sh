@@ -43,6 +43,37 @@ if [ $exitstatus = 0 ]; then
     }
     
     getFiles "*"
+    
+    if [ "$OPTION" == "1" ]; then
+        if [[ "${#folders[@]}" > 0 ]]; then
+            folder=$((whiptail --title "Archivage d’un répertoire" \
+            --menu "Veuillez séléctionner le répertoire à archiver" 16 45 6 "${folders[@]}" 3>&1 1>&2 2>&3) | head -c 1)
+            ((folderIndex = 2 * ( $( printf "%d" "'$folder" ) - 65 ) + 1 ))
+            
+            if [ -z "$folder" ]; then
+                echo "Vous avez annulé"
+            else
+                folderInDir=${folders[$folderIndex]}
+                
+                if [ -d "$folderInDir" ]; then
+                    archiveName=$(whiptail --title "Archivage d’un répertoire" --inputbox "Veuillez saisir un nom" 16 45  3>&1 1>&2 2>&3)
+                    
+                    exitstatus=$?
+                    if [ $exitstatus = 0 ]; then
+                        tar -czf ${archiveName}.tar ${folderInDir}
+                        echo 'Le dossier "'${folderInDir}'" est bien archivé sous le nom "'${archiveName}'.tar"'
+                    else
+                        echo "Vous avez annulé"
+                    fi
+                else
+                    echo "Le dossier" '"'${folderInDir}'"' "n'existe pas"
+                fi
+            fi
+        else
+            whiptail --title "Archivage d’un répertoire" --msgbox "Il n'y a pas de dossiers dans ce répertoire" 8 54
+        fi
+    fi
+    
 else
     echo "Vous avez annulé"
 fi
