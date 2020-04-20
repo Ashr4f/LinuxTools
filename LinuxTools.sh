@@ -13,7 +13,36 @@ OPTION=$(whiptail --title "LinuxTools" --menu "Veuillez choisir une option : " 1
 
 exitstatus=$?
 if [ $exitstatus = 0 ]; then
-    echo "Option: $OPTION"
+    
+    foldersCount=0
+    folders=()
+    s=65
+    for fol in *
+    do
+        if [ -d "$fol" ]; then
+            folders[foldersCount]=$(echo -en "\0$(( $s / 64 * 100 + $s % 64 / 8 * 10 + $s % 8 ))"\))
+            folders[foldersCount+1]="$fol"
+            ((foldersCount+=2))
+            ((s++))
+        fi
+    done
+    
+    function getFiles(){
+        filesCount=0
+        files=()
+        ss=65
+        for fil in $1
+        do
+            if [ -f "$fil" ]; then
+                files[filesCount]=$(echo -en "\0$(( $ss / 64 * 100 + $ss % 64 / 8 * 10 + $ss % 8 ))"\))
+                files[filesCount+1]="$fil"
+                ((filesCount+=2))
+                ((ss++))
+            fi
+        done
+    }
+    
+    getFiles "*"
 else
     echo "Vous avez annulé"
 fi
