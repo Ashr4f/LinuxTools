@@ -99,6 +99,31 @@ if [ $exitstatus = 0 ]; then
             fi
         fi
     fi
+
+    if [ "$OPTION" == "3" ]; then
+        getFiles "*.tar"
+
+        if [[ "${#files[@]}" > 0 ]]; then
+            file=$((whiptail --title "Désarchivage d’une archive" \
+            --menu "Veuillez séléctionner l'archive à désarchiver" 16 45 6 "${files[@]}" 3>&1 1>&2 2>&3) | head -c 1)
+            ((fileIndex = 2 * ( $( printf "%d" "'$file" ) - 65 ) + 1 ))
+
+            if [ -z "$file" ]; then
+                echo "Vous avez annulé"
+            else
+                fileInDir=${files[$fileIndex]}
+
+                if [ -f "$fileInDir" ]; then
+                    tar -xf ${fileInDir}
+                    echo $'L\'archive '\"$fileInDir\"' a été bien désarchivée'
+                else
+                    echo $'Le fichier '\"$fileInDir\"'' $'n\'existe pas'
+                fi
+            fi
+        else
+            whiptail --title "Désarchivage d’une archive" --msgbox "Il n'y a pas de fichiers \"tar\" dans ce répertoire" 8 54
+        fi
+    fi
 else
     echo "Vous avez annulé"
 fi
