@@ -180,6 +180,29 @@ if [ $exitstatus = 0 ]; then
         fi
     fi
     
+    if [ "$OPTION" == "6" ]; then
+        getFiles "*.csv"
+        
+        if [[ "${#files[@]}" > 0 ]]; then
+            file=$((whiptail --title "Mise en forme d'un fichier .csv" \
+            --menu "Veuillez séléctionner le fichier .csv à mettre en forme" 16 45 6 "${files[@]}" 3>&1 1>&2 2>&3) | head -c 1)
+            ((fileIndex = 2 * ( $( printf "%d" "'$file" ) - 65 ) + 1 ))
+            
+            if [ -z "$file" ]; then
+                echo "Vous avez annulé"
+            else
+                fileInDir=${files[$fileIndex]}
+                
+                if [ -f "$fileInDir" ] && [ "${fileInDir: -4}" == ".csv" ]; then
+                    cat "$fileInDir" | sed -e 's/,,/, ,/g' | column -s, -t | less -#5 -N -S
+                else
+                    echo '"'${fileInDir}'"' "n'est pas un fichier .csv"
+                fi
+            fi
+        else
+            whiptail --title "Mise en forme d'un fichier .csv" --msgbox "Il n'y a pas de fichiers \"csv\" dans ce répertoire" 8 54
+        fi
+    fi
 else
     echo "Vous avez annulé"
 fi
