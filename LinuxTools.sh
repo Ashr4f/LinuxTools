@@ -47,7 +47,7 @@ if [ $exitstatus = 0 ]; then
     if [ "$OPTION" == "1" ]; then
         if [[ "${#folders[@]}" > 0 ]]; then
             folder=$((whiptail --title "Archivage d’un répertoire" \
-            --menu "Veuillez séléctionner le répertoire à archiver" 16 45 6 "${folders[@]}" 3>&1 1>&2 2>&3) | head -c 1)
+            --menu "Veuillez sélectionner le répertoire à archiver" 16 45 6 "${folders[@]}" 3>&1 1>&2 2>&3) | head -c 1)
             ((folderIndex = 2 * ( $( printf "%d" "'$folder" ) - 65 ) + 1 ))
             
             if [ -z "$folder" ]; then
@@ -76,7 +76,7 @@ if [ $exitstatus = 0 ]; then
     
     if [ "$OPTION" == "2" ]; then
         file=$((whiptail --title "Compression d’une archive" \
-        --menu "Veuillez séléctionner l'archive à compresser" 16 45 6 "${files[@]}" 3>&1 1>&2 2>&3) | head -c 1)
+        --menu "Veuillez sélectionner l'archive à compresser" 16 45 6 "${files[@]}" 3>&1 1>&2 2>&3) | head -c 1)
         ((fileIndex = 2 * ( $( printf "%d" "'$file" ) - 65 ) + 1 ))
         
         if [ -z "$file" ]; then
@@ -105,7 +105,7 @@ if [ $exitstatus = 0 ]; then
 
         if [[ "${#files[@]}" > 0 ]]; then
             file=$((whiptail --title "Désarchivage d’une archive" \
-            --menu "Veuillez séléctionner l'archive à désarchiver" 16 45 6 "${files[@]}" 3>&1 1>&2 2>&3) | head -c 1)
+            --menu "Veuillez sélectionner l'archive à désarchiver" 16 45 6 "${files[@]}" 3>&1 1>&2 2>&3) | head -c 1)
             ((fileIndex = 2 * ( $( printf "%d" "'$file" ) - 65 ) + 1 ))
 
             if [ -z "$file" ]; then
@@ -185,7 +185,7 @@ if [ $exitstatus = 0 ]; then
         
         if [[ "${#files[@]}" > 0 ]]; then
             file=$((whiptail --title "Mise en forme d'un fichier .csv" \
-            --menu "Veuillez séléctionner le fichier .csv à mettre en forme" 16 45 6 "${files[@]}" 3>&1 1>&2 2>&3) | head -c 1)
+            --menu "Veuillez sélectionner le fichier .csv à mettre en forme" 16 45 6 "${files[@]}" 3>&1 1>&2 2>&3) | head -c 1)
             ((fileIndex = 2 * ( $( printf "%d" "'$file" ) - 65 ) + 1 ))
             
             if [ -z "$file" ]; then
