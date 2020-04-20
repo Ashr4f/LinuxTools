@@ -74,6 +74,31 @@ if [ $exitstatus = 0 ]; then
         fi
     fi
     
+    if [ "$OPTION" == "2" ]; then
+        file=$((whiptail --title "Compression d’une archive" \
+        --menu "Veuillez séléctionner l'archive à compresser" 16 45 6 "${files[@]}" 3>&1 1>&2 2>&3) | head -c 1)
+        ((fileIndex = 2 * ( $( printf "%d" "'$file" ) - 65 ) + 1 ))
+        
+        if [ -z "$file" ]; then
+            echo "Vous avez annulé"
+        else
+            fileInDir=${files[$fileIndex]}
+            
+            if [ -d "$fileInDir" ] || [ -f "$fileInDir" ]; then
+                archiveName=$(whiptail --title "Compression d’une archive" --inputbox "Veuillez saisir un nom" 16 45  3>&1 1>&2 2>&3)
+                
+                exitstatus=$?
+                if [ $exitstatus = 0 ]; then
+                    tar -czf ${archiveName}.tar.gz ${fileInDir}
+                    echo $'L\'archive '\"$fileInDir\"' est bien archivé sous le nom "'${archiveName}'.tar.gz"'
+                else
+                    echo "Vous avez annulé"
+                fi
+            else
+                echo $'L\'archive '\"$fileInDir\"'' $'n\'existe pas'
+            fi
+        fi
+    fi
 else
     echo "Vous avez annulé"
 fi
