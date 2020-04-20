@@ -203,6 +203,19 @@ if [ $exitstatus = 0 ]; then
             whiptail --title "Mise en forme d'un fichier .csv" --msgbox "Il n'y a pas de fichiers \"csv\" dans ce répertoire" 8 54
         fi
     fi
+    
+    if [ "$OPTION" == "7" ]; then
+        ip addr show
+    fi
+    
+    if [ "$OPTION" == "8" ]; then
+        sudo /etc/init.d/network-manager restart
+    fi
+    
+    if [ "$OPTION" == "9" ]; then
+        echo "Vous avez quitté"
+    fi
+    
 else
     echo "Vous avez annulé"
 fi
