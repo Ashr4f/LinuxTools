@@ -150,6 +150,36 @@ if [ $exitstatus = 0 ]; then
             whiptail --title "Décompression d’une archive compressée" --msgbox "Il n'y a pas de fichiers \"gz\" dans ce répertoire" 8 54
         fi
     fi
+    
+    if [ "$OPTION" == "5" ]; then
+        file1=$((whiptail --title "Comparaison de 2 fichiers" \
+        --menu "Veuillez choisir le premier fichier" 16 45 6 "${files[@]}" 3>&1 1>&2 2>&3) | head -c 1)
+        ((file1Index = 2 * ( $( printf "%d" "'$file1" ) - 65 ) + 1 ))
+        
+        exitstatus=$?
+        if [ $exitstatus = 0 ]; then
+            file2=$((whiptail --title "Comparaison de 2 fichiers" \
+            --menu "Veuillez choisir le deuxième fichier" 16 45 6 "${files[@]}" 3>&1 1>&2 2>&3) | head -c 1)
+            ((file2Index = 2 * ( $( printf "%d" "'$file2" ) - 65 ) + 1 ))
+            
+            exitstatus=$?
+            if [ $exitstatus = 0 ]; then
+                file1Hash=`md5sum ./${files[file1Index]} | awk '{print $1}'`
+                file2Hash=`md5sum ./${files[file2Index]} | awk '{print $1}'`
+                if [ $file1Hash == $file2Hash ]
+                then
+                    echo '"'${files[file1Index]}'" Et "'${files[$file2Index]}'" Sont identiques.'
+                else
+                    echo '"'${files[file1Index]}'" Et "'${files[$file2Index]}'" Sont différents.'
+                fi
+            else
+                echo "Vous avez annulé"
+            fi
+        else
+            echo "Vous avez annulé"
+        fi
+    fi
+    
 else
     echo "Vous avez annulé"
 fi
